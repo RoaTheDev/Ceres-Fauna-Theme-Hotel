@@ -1,1 +1,143 @@
 @import "tailwindcss";
+
+* {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+}
+
+@theme {
+    --color-fauna-50: #f0fdf4;
+    --color-fauna-100: #dcfce7;
+    --color-fauna-200: #bbf7d0;
+    --color-fauna-300: #86efac;
+    --color-fauna-400: #4ade80;
+    --color-fauna-500: #22c55e;
+    --color-fauna-600: #16a34a;
+    --color-fauna-700: #15803d;
+    --color-fauna-800: #166534;
+    --color-fauna-900: #14532d;
+    --color-fauna-950: #052e16;
+    --color-nature-50: #f7fee7;
+    --color-nature-100: #ecfccb;
+    --color-nature-200: #d9f99d;
+    --color-nature-300: #bef264;
+    --color-nature-400: #a3e635;
+    --color-nature-500: #84cc16;
+    --color-nature-600: #65a30d;
+    --color-nature-700: #4d7c0f;
+    --color-nature-800: #3f6212;
+    --color-nature-900: #365314;
+    --color-background: #fafaf9;
+    --color-foreground: #16a34a;
+    --color-card: #ffffff;
+    --color-card-foreground: #16a34a;
+    --color-popover: #ffffff;
+    --color-popover-foreground: #16a34a;
+    --color-primary: #22c55e;
+    --color-primary-foreground: #ffffff;
+    --color-secondary: #ecfdf5;
+    --color-secondary-foreground: #15803d;
+    --color-muted: #f5f5f4;
+    --color-muted-foreground: #737373;
+    --color-accent: #bbf7d0;
+    --color-accent-foreground: #15803d;
+    --color-destructive: #ef4444;
+    --color-destructive-foreground: #ffffff;
+    --color-border: #e5e7eb;
+    --color-input: #e5e7eb;
+    --color-ring: #22c55e;
+
+    --radius: 0.75rem;
+
+    --animate-accordion-down: accordion-down 0.2s ease-out;
+    --animate-accordion-up: accordion-up 0.2s ease-out;
+    --animate-fade-in: fade-in 0.5s ease-out;
+    --animate-slide-in: slide-in 0.3s ease-out;
+    --animate-float: float 3s ease-in-out infinite;
+}
+
+@layer base {
+    * {
+        border-color: var(--color-border);
+    }
+
+    body {
+        background-color: var(--color-background);
+        color: var(--color-foreground);
+        background-image: radial-gradient(circle at 25% 25%, rgba(34, 197, 94, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 75% 75%, rgba(132, 204, 22, 0.05) 0%, transparent 50%);
+    }
+}
+
+@layer utilities {
+    .nature-gradient {
+        background: linear-gradient(135deg, #22c55e 0%, #84cc16 100%);
+    }
+
+    .leaf-pattern {
+        background-image: radial-gradient(circle at 20% 80%, rgba(34, 197, 94, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(132, 204, 22, 0.1) 0%, transparent 50%);
+    }
+
+    .rounded-custom-lg {
+        border-radius: var(--radius);
+    }
+
+    .rounded-custom-md {
+        border-radius: calc(var(--radius) - 2px);
+    }
+
+    .rounded-custom-sm {
+        border-radius: calc(var(--radius) - 4px);
+    }
+}
+
+@keyframes accordion-down {
+    from {
+        height: 0;
+    }
+    to {
+        height: auto;
+    }
+}
+
+@keyframes accordion-up {
+    from {
+        height: auto;
+    }
+    to {
+        height: 0;
+    }
+}
+
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slide-in {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}

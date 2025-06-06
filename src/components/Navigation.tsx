@@ -13,7 +13,6 @@ const Navigation = () => {
         const newMode = !isAdmin;
         setIsAdmin(newMode);
 
-        // Update URL parameters to reflect admin mode
         const url = new URL(window.location.href);
         if (newMode) {
             url.searchParams.set('admin', 'true');
@@ -49,10 +48,6 @@ const Navigation = () => {
                             </>
                         ) : (
                             <>
-                                <a href="#dashboard" className="text-fauna-700 hover:text-fauna-900 transition-colors">Dashboard</a>
-                                <a href="#manage-rooms" className="text-fauna-700 hover:text-fauna-900 transition-colors">Rooms</a>
-                                <a href="#manage-bookings" className="text-fauna-700 hover:text-fauna-900 transition-colors">Bookings</a>
-                                <a href="#amenities-mgmt" className="text-fauna-700 hover:text-fauna-900 transition-colors">Amenities</a>
                             </>
                         )}
                     </div>
@@ -87,10 +82,6 @@ const Navigation = () => {
                                         </>
                                     ) : (
                                         <>
-                                            <a href="#dashboard" className="text-fauna-700 hover:text-fauna-900 p-2 rounded-lg hover:bg-fauna-50">Dashboard</a>
-                                            <a href="#manage-rooms" className="text-fauna-700 hover:text-fauna-900 p-2 rounded-lg hover:bg-fauna-50">Rooms</a>
-                                            <a href="#manage-bookings" className="text-fauna-700 hover:text-fauna-900 p-2 rounded-lg hover:bg-fauna-50">Bookings</a>
-                                            <a href="#amenities-mgmt" className="text-fauna-700 hover:text-fauna-900 p-2 rounded-lg hover:bg-fauna-50">Amenities</a>
                                         </>
                                     )}
                                 </div>

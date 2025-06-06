@@ -4,13 +4,11 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Hotel, User } from 'lucide-react';
-import type {FormEvent} from "react";
 
 const ContactSection = () => {
-    const handleSubmit = (e: FormEvent) => {
-        e.preventDefault();
+    const handleSubmit = () => {
         console.log('Contact form submitted');
-        // Handle contact form submission
+        // Backend request
     };
 
     return (
@@ -32,24 +30,14 @@ const ContactSection = () => {
                             <CardTitle className="text-2xl text-fauna-800">Send us a Message</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <form onSubmit={handleSubmit} className="space-y-6">
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div className="space-y-2">
-                                        <Label htmlFor="firstName" className="text-fauna-700">First Name</Label>
-                                        <Input
-                                            id="firstName"
-                                            placeholder="Your first name"
-                                            className="border-fauna-200 focus:border-fauna-500"
-                                        />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <Label htmlFor="lastName" className="text-fauna-700">Last Name</Label>
-                                        <Input
-                                            id="lastName"
-                                            placeholder="Your last name"
-                                            className="border-fauna-200 focus:border-fauna-500"
-                                        />
-                                    </div>
+                            <div className="space-y-6">
+                                <div className="space-y-2">
+                                    <Label htmlFor="name" className="text-fauna-700">Name</Label>
+                                    <Input
+                                        id="name"
+                                        placeholder="Your full name"
+                                        className="border-fauna-200 focus:border-fauna-500"
+                                    />
                                 </div>
 
                                 <div className="space-y-2">
@@ -63,41 +51,22 @@ const ContactSection = () => {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label htmlFor="phone" className="text-fauna-700">Phone (Optional)</Label>
-                                    <Input
-                                        id="phone"
-                                        type="tel"
-                                        placeholder="+1 (555) 123-4567"
-                                        className="border-fauna-200 focus:border-fauna-500"
-                                    />
-                                </div>
-
-                                <div className="space-y-2">
-                                    <Label htmlFor="subject" className="text-fauna-700">Subject</Label>
-                                    <Input
-                                        id="subject"
-                                        placeholder="How can we help you?"
-                                        className="border-fauna-200 focus:border-fauna-500"
-                                    />
-                                </div>
-
-                                <div className="space-y-2">
                                     <Label htmlFor="message" className="text-fauna-700">Message</Label>
                                     <Textarea
                                         id="message"
                                         placeholder="Tell us about your plans or questions..."
-                                        rows={5}
+                                        rows={4}
                                         className="border-fauna-200 focus:border-fauna-500"
                                     />
                                 </div>
 
                                 <Button
-                                    type="submit"
+                                    onClick={handleSubmit}
                                     className="w-full bg-fauna-500 hover:bg-fauna-600 text-white py-3 text-lg"
                                 >
                                     Send Message
                                 </Button>
-                            </form>
+                            </div>
                         </CardContent>
                     </Card>
 
@@ -154,18 +123,6 @@ const ContactSection = () => {
                                         Special Requests
                                     </Button>
                                 </div>
-                            </CardContent>
-                        </Card>
-
-                        <Card className="border-fauna-200 shadow-xl bg-fauna-50">
-                            <CardContent className="p-8 text-center">
-                                <h3 className="text-xl font-bold text-fauna-800 mb-4">Emergency Contact</h3>
-                                <p className="text-fauna-600 mb-4">
-                                    For urgent matters outside business hours
-                                </p>
-                                <Button className="bg-red-500 hover:bg-red-600 text-white">
-                                    Emergency Line: (555) 911-HELP
-                                </Button>
                             </CardContent>
                         </Card>
                     </div>
