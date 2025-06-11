@@ -1,24 +1,21 @@
 import  { useState } from 'react';
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { Search, Filter, X } from 'lucide-react';
+import { Filter, X } from 'lucide-react';
 
-interface RoomSearchFilterProps {
-    onSearch: (query: string) => void;
-    onFilter: (filters: FilterOptions) => void;
-    onClearFilters: () => void;
-}
-type FilterValue = string | string[];
 export interface FilterOptions {
     priceRange: string;
     capacity: string;
     features: string[];
 }
 
-const RoomSearchFilter = ({ onSearch, onFilter, onClearFilters }: RoomSearchFilterProps) => {
-    const [searchQuery, setSearchQuery] = useState('');
+interface RoomSearchFilterProps {
+    onFilter: (filters: FilterOptions) => void;
+    onClearFilters: () => void;
+}
+
+const RoomSearchFilter = ({ onFilter, onClearFilters }: RoomSearchFilterProps) => {
     const [filters, setFilters] = useState<FilterOptions>({
         priceRange: '',
         capacity: '',
@@ -26,12 +23,7 @@ const RoomSearchFilter = ({ onSearch, onFilter, onClearFilters }: RoomSearchFilt
     });
     const [showFilters, setShowFilters] = useState(false);
 
-    const handleSearch = (value: string) => {
-        setSearchQuery(value);
-        onSearch(value);
-    };
-
-    const handleFilterChange = (key: keyof FilterOptions, value: FilterValue) => {
+    const handleFilterChange = (key: keyof FilterOptions, value: any) => {
         const newFilters = { ...filters, [key]: value };
         setFilters(newFilters);
         onFilter(newFilters);
@@ -46,7 +38,6 @@ const RoomSearchFilter = ({ onSearch, onFilter, onClearFilters }: RoomSearchFilt
 
     const clearAllFilters = () => {
         setFilters({ priceRange: '', capacity: '', features: [] });
-        setSearchQuery('');
         onClearFilters();
     };
 
@@ -55,15 +46,6 @@ const RoomSearchFilter = ({ onSearch, onFilter, onClearFilters }: RoomSearchFilt
     return (
         <div className="bg-white rounded-lg shadow-md p-6 mb-8">
             <div className="flex flex-col md:flex-row gap-4 items-center">
-                <div className="relative flex-1 w-full">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-fauna-400 h-4 w-4" />
-                    <Input
-                        placeholder="Search rooms by name or description..."
-                        value={searchQuery}
-                        onChange={(e) => handleSearch(e.target.value)}
-                        className="pl-10 border-fauna-200 focus:border-fauna-400"
-                    />
-                </div>
                 <Button
                     variant="outline"
                     onClick={() => setShowFilters(!showFilters)}
@@ -72,7 +54,7 @@ const RoomSearchFilter = ({ onSearch, onFilter, onClearFilters }: RoomSearchFilt
                     <Filter className="mr-2 h-4 w-4" />
                     Filters
                 </Button>
-                {(filters.priceRange || filters.capacity || filters.features.length > 0 || searchQuery) && (
+                {(filters.priceRange || filters.capacity || filters.features.length > 0) && (
                     <Button
                         variant="ghost"
                         onClick={clearAllFilters}

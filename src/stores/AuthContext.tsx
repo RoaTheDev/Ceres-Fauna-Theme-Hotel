@@ -1,5 +1,5 @@
-
-import React, { createContext,  useState, type ReactNode  } from 'react';
+import { AuthContext } from '@/hooks/useAuth';
+import React, { type ReactNode, useState} from 'react';
 
 export interface AuthContextType {
     user: string | null;
@@ -11,7 +11,6 @@ interface AuthProviderProps {
     children: ReactNode;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {

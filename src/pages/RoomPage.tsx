@@ -1,14 +1,14 @@
-import {useMemo, useState} from 'react';
+import  { useState, useMemo } from 'react';
 import Navigation from '@/components/Navigation';
 import RoomsSection from '@/components/RoomSection';
-import RoomSearchFilter, {type FilterOptions} from '@/components/RoomSearchFilter';
-import {Button} from '@/components/ui/button';
-import {ArrowLeft} from 'lucide-react';
-import {Link} from 'react-router-dom';
-import {rooms} from '@/data/rooms';
+import RoomSearchFilter, {type FilterOptions } from '@/components/RoomSearchFilter';
+import DateRangePicker from '@/components/DateRangePicker';
+import { Button } from '@/components/ui/button';
+
+import { Link } from 'react-router-dom';
+import { rooms } from '@/data/rooms';
 
 const RoomsPage = () => {
-    const [searchQuery, setSearchQuery] = useState('');
     const [filters, setFilters] = useState<FilterOptions>({
         priceRange: '',
         capacity: '',
@@ -17,11 +17,6 @@ const RoomsPage = () => {
 
     const filteredRooms = useMemo(() => {
         return rooms.filter(room => {
-            const matchesSearch = !searchQuery ||
-                room.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                room.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                room.features.some(feature => feature.toLowerCase().includes(searchQuery.toLowerCase()));
-
             let matchesPrice = true;
             if (filters.priceRange) {
                 const [min, max] = filters.priceRange.split('-').map(p => p.replace('+', '').replace('$', ''));
@@ -35,47 +30,46 @@ const RoomsPage = () => {
             const matchesFeatures = filters.features.length === 0 ||
                 filters.features.every(feature => room.features.includes(feature));
 
-            return matchesSearch && matchesPrice && matchesCapacity && matchesFeatures;
+            return matchesPrice && matchesCapacity && matchesFeatures;
         });
-    }, [searchQuery, filters]);
-
-    const handleSearch = (query: string) => {
-        setSearchQuery(query);
-    };
+    }, [filters]);
 
     const handleFilter = (newFilters: FilterOptions) => {
         setFilters(newFilters);
     };
 
     const handleClearFilters = () => {
-        setSearchQuery('');
-        setFilters({priceRange: '', capacity: '', features: []});
+        setFilters({ priceRange: '', capacity: '', features: [] });
+    };
+
+    const handleDateChange = (checkIn: Date | undefined, checkOut: Date | undefined) => {
+        console.log('Date range selected:', { checkIn, checkOut });
     };
 
     return (
         <div className="min-h-screen bg-background">
-            <Navigation/>
+            <Navigation />
             <div className="container mx-auto px-4 py-8">
-                <Link to="/">
-                    <Button variant="ghost" className="mb-6 pl-0">
-                        <ArrowLeft className="mr-2 h-4 w-4"/> Back to Home
-                    </Button>
-                </Link>
+
                 <h1 className="text-4xl font-bold text-fauna-800 mb-8">Our Rooms & Suites</h1>
                 <p className="text-lg text-fauna-600 mb-8 max-w-3xl">
-                    Discover our nature-inspired sanctuaries, each designed to immerse you in tranquility while
-                    providing modern comforts and luxurious amenities.
+                    Discover our nature-inspired sanctuaries, each designed to immerse you in tranquility while providing modern comforts and luxurious amenities.
                 </p>
 
+                {/* Date Selection */}
+                <div className="bg-white rounded-lg border border-fauna-200 p-6 mb-8 shadow-sm">
+                    <h2 className="text-xl font-semibold text-fauna-800 mb-4">Select Your Stay</h2>
+                    <DateRangePicker onDateChange={handleDateChange} />
+                </div>
+
                 <RoomSearchFilter
-                    onSearch={handleSearch}
                     onFilter={handleFilter}
                     onClearFilters={handleClearFilters}
                 />
 
                 {filteredRooms.length === 0 ? (
                     <div className="text-center py-12">
-                        <p className="text-xl text-fauna-600 mb-4">No rooms match your search criteria</p>
+                        <p className="text-xl text-fauna-600 mb-4">No rooms match your filter criteria</p>
                         <Button
                             onClick={handleClearFilters}
                             variant="outline"
@@ -85,7 +79,7 @@ const RoomsPage = () => {
                         </Button>
                     </div>
                 ) : (
-                    <RoomsSection showFullDetails={true} filteredRooms={filteredRooms}/>
+                    <RoomsSection showFullDetails={true} filteredRooms={filteredRooms} />
                 )}
             </div>
 
@@ -127,8 +121,7 @@ const RoomsPage = () => {
                         </div>
                     </div>
                     <div className="border-t border-fauna-700 mt-8 pt-8 text-center text-fauna-200">
-                        <p>&copy; 2024 Ceres Garden Hotel. All rights reserved. Inspired by nature, crafted with
-                            love.</p>
+                        <p>&copy; 2024 Ceres Garden Hotel. All rights reserved. Inspired by nature, crafted with love.</p>
                     </div>
                 </div>
             </footer>

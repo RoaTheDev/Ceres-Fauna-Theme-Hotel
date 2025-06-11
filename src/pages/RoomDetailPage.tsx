@@ -1,33 +1,29 @@
-import { useParams, Link } from 'react-router-dom';
+import {useState} from 'react';
+import {Link, useParams} from 'react-router-dom';
 import Navigation from '@/components/Navigation';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import {
-    ArrowLeft,
-    User,
-    Hotel,
-    Leaf,
-    Wifi,
-    Coffee
-} from 'lucide-react';
-import { Link as RouterLink } from 'react-router-dom';
-import { rooms } from '@/data/rooms.ts';
+import DateRangePicker from '@/components/DateRangePicker';
+import {Button} from '@/components/ui/button';
+import {Card, CardContent} from '@/components/ui/card';
+import {Badge} from '@/components/ui/badge';
+import {ArrowLeft, Coffee, Hotel, Leaf, User, Wifi} from 'lucide-react';
+import {rooms} from '@/data/rooms.ts';
 
 const RoomDetailPage = () => {
-    const { id } = useParams();
+    const {id} = useParams();
     const roomId = parseInt(id || '0');
+    const [checkInDate, setCheckInDate] = useState<Date | undefined>();
+    const [checkOutDate, setCheckOutDate] = useState<Date | undefined>();
 
     const room = rooms.find(room => room.id === roomId);
 
     if (!room) {
         return (
             <div className="min-h-screen bg-background">
-                <Navigation />
+                <Navigation/>
                 <div className="container mx-auto px-4 py-20">
                     <Link to="/rooms">
                         <Button variant="ghost" className="mb-6 pl-0">
-                            <ArrowLeft className="mr-2 h-4 w-4" /> Back to Rooms
+                            <ArrowLeft className="mr-2 h-4 w-4"/> Back to Rooms
                         </Button>
                     </Link>
                     <div className="text-center py-20">
@@ -44,9 +40,9 @@ const RoomDetailPage = () => {
 
     // Additional details for the expanded room view
     const amenities = [
-        { icon: <Wifi className="h-5 w-5" />, name: "Free High-Speed WiFi" },
-        { icon: <Coffee className="h-5 w-5" />, name: "Coffee Machine" },
-        { icon: <Leaf className="h-5 w-5" />, name: "Eco-Friendly Toiletries" },
+        {icon: <Wifi className="h-5 w-5"/>, name: "Free High-Speed WiFi"},
+        {icon: <Coffee className="h-5 w-5"/>, name: "Coffee Machine"},
+        {icon: <Leaf className="h-5 w-5"/>, name: "Eco-Friendly Toiletries"},
     ];
 
     const highlights = [
@@ -58,17 +54,35 @@ const RoomDetailPage = () => {
     ];
 
     const handleBookRoom = () => {
-        console.log(`Booking room ${room.id}`);
+        if (!checkInDate || !checkOutDate) {
+            console.log('Please select check-in and check-out dates');
+            return;
+        }
+        console.log(`Booking room ${room.id} from ${checkInDate.toDateString()} to ${checkOutDate.toDateString()}`);
         // This would open the booking process
     };
 
+    const handleDateChange = (checkIn: Date | undefined, checkOut: Date | undefined) => {
+        setCheckInDate(checkIn);
+        setCheckOutDate(checkOut);
+    };
+
+    const calculateTotalPrice = () => {
+        if (!checkInDate || !checkOutDate) return room.price;
+        const nights = Math.ceil((checkOutDate.getTime() - checkInDate.getTime()) / (1000 * 60 * 60 * 24));
+        return room.price * nights;
+    };
+
+    const nights = checkInDate && checkOutDate ?
+        Math.ceil((checkOutDate.getTime() - checkInDate.getTime()) / (1000 * 60 * 60 * 24)) : 1;
+
     return (
         <div className="min-h-screen bg-background">
-            <Navigation />
+            <Navigation/>
             <div className="container mx-auto px-4 py-8">
                 <Link to="/rooms">
                     <Button variant="ghost" className="mb-6 pl-0">
-                        <ArrowLeft className="mr-2 h-4 w-4" /> Back to Rooms
+                        <ArrowLeft className="mr-2 h-4 w-4"/> Back to Rooms
                     </Button>
                 </Link>
 
@@ -84,16 +98,16 @@ const RoomDetailPage = () => {
                         </div>
                         <div className="grid grid-cols-4 gap-2">
                             <div className="rounded-lg overflow-hidden">
-                                <img src={room.image} alt="Room view 1" className="w-full h-24 object-cover" />
+                                <img src={room.image} alt="Room view 1" className="w-full h-24 object-cover"/>
                             </div>
                             <div className="rounded-lg overflow-hidden">
-                                <img src={room.image} alt="Room view 2" className="w-full h-24 object-cover" />
+                                <img src={room.image} alt="Room view 2" className="w-full h-24 object-cover"/>
                             </div>
                             <div className="rounded-lg overflow-hidden">
-                                <img src={room.image} alt="Room view 3" className="w-full h-24 object-cover" />
+                                <img src={room.image} alt="Room view 3" className="w-full h-24 object-cover"/>
                             </div>
                             <div className="rounded-lg overflow-hidden">
-                                <img src={room.image} alt="Room view 4" className="w-full h-24 object-cover" />
+                                <img src={room.image} alt="Room view 4" className="w-full h-24 object-cover"/>
                             </div>
                         </div>
                     </div>
@@ -110,11 +124,11 @@ const RoomDetailPage = () => {
 
                             <div className="flex items-center space-x-4 mt-3 text-fauna-600">
                 <span className="flex items-center">
-                  <User className="w-4 h-4 mr-1" />
+                  <User className="w-4 h-4 mr-1"/>
                   Up to {room.capacity} guests
                 </span>
                                 <span className="flex items-center">
-                  <Hotel className="w-4 h-4 mr-1" />
+                  <Hotel className="w-4 h-4 mr-1"/>
                                     {room.size}
                 </span>
                             </div>
@@ -123,11 +137,19 @@ const RoomDetailPage = () => {
                         <Card>
                             <CardContent className="p-6">
                                 <h3 className="font-semibold text-fauna-800 mb-4">Book This Room</h3>
+
+                                {/* Date Selection */}
+                                <div className="mb-6">
+                                    <DateRangePicker onDateChange={handleDateChange}/>
+                                </div>
+
                                 <div className="mb-4">
-                                    <p className="mb-2 text-fauna-600">Price for 1 night</p>
+                                    <p className="mb-2 text-fauna-600">Price
+                                        for {nights} night{nights > 1 ? 's' : ''}</p>
                                     <div className="flex items-end">
-                                        <span className="text-2xl font-bold text-fauna-700">${room.price}</span>
-                                        <span className="text-fauna-600 ml-1">/night</span>
+                                        <span
+                                            className="text-2xl font-bold text-fauna-700">${calculateTotalPrice()}</span>
+                                        <span className="text-fauna-600 ml-1">total</span>
                                     </div>
                                     <p className="text-sm text-fauna-500 mt-1">Excluding taxes and fees</p>
                                 </div>
@@ -135,8 +157,9 @@ const RoomDetailPage = () => {
                                 <Button
                                     onClick={handleBookRoom}
                                     className="w-full bg-fauna-500 hover:bg-fauna-600 text-white py-6 text-lg"
+                                    disabled={!checkInDate || !checkOutDate}
                                 >
-                                    Book Now
+                                    {!checkInDate || !checkOutDate ? 'Select Dates to Book' : 'Book Now'}
                                 </Button>
                                 <p className="text-center text-sm text-fauna-600 mt-3">
                                     Free cancellation up to 24 hours before check-in
@@ -153,9 +176,12 @@ const RoomDetailPage = () => {
                             <h2 className="text-2xl font-bold text-fauna-800 mb-4">Description</h2>
                             <p className="text-fauna-600">{room.description}</p>
                             <p className="text-fauna-600 mt-4">
-                                Immerse yourself in the tranquil beauty of nature with panoramic views from your private balcony.
-                                Each element of this room has been carefully selected to create a harmonious blend of comfort and
-                                natural aesthetics, using sustainable materials and incorporating elements of the surrounding landscape.
+                                Immerse yourself in the tranquil beauty of nature with panoramic views from your private
+                                balcony.
+                                Each element of this room has been carefully selected to create a harmonious blend of
+                                comfort and
+                                natural aesthetics, using sustainable materials and incorporating elements of the
+                                surrounding landscape.
                             </p>
                         </div>
 
@@ -181,8 +207,10 @@ const RoomDetailPage = () => {
                             <h2 className="text-2xl font-bold text-fauna-800 mb-4">Amenities</h2>
                             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                                 {amenities.map((amenity, idx) => (
-                                    <div key={idx} className="flex flex-col items-center p-4 bg-fauna-50 rounded-lg text-center">
-                                        <div className="w-12 h-12 bg-fauna-100 rounded-full flex items-center justify-center mb-3">
+                                    <div key={idx}
+                                         className="flex flex-col items-center p-4 bg-fauna-50 rounded-lg text-center">
+                                        <div
+                                            className="w-12 h-12 bg-fauna-100 rounded-full flex items-center justify-center mb-3">
                                             {amenity.icon}
                                         </div>
                                         <span className="text-fauna-700">{amenity.name}</span>
@@ -235,9 +263,9 @@ const RoomDetailPage = () => {
                         <div>
                             <h4 className="font-semibold mb-4">Quick Links</h4>
                             <ul className="space-y-2 text-fauna-200">
-                                <li><RouterLink to="/rooms" className="hover:text-white transition-colors">Rooms</RouterLink></li>
-                                <li><RouterLink to="/about" className="hover:text-white transition-colors">About Us</RouterLink></li>
-                                <li><RouterLink to="/contact" className="hover:text-white transition-colors">Contact</RouterLink></li>
+                                <li><a href="/rooms" className="hover:text-white transition-colors">Rooms</a></li>
+                                <li><a href="/about" className="hover:text-white transition-colors">About Us</a></li>
+                                <li><a href="/contact" className="hover:text-white transition-colors">Contact</a></li>
                             </ul>
                         </div>
                         <div>
@@ -260,7 +288,8 @@ const RoomDetailPage = () => {
                         </div>
                     </div>
                     <div className="border-t border-fauna-700 mt-8 pt-8 text-center text-fauna-200">
-                        <p>&copy; 2024 Ceres Garden Hotel. All rights reserved. Inspired by nature, crafted with love.</p>
+                        <p>&copy; 2024 Ceres Garden Hotel. All rights reserved. Inspired by nature, crafted with
+                            love.</p>
                     </div>
                 </div>
             </footer>

@@ -9,12 +9,17 @@ interface RoomsSectionProps {
     showFullDetails?: boolean;
     filteredRooms?: typeof rooms;
 }
+interface RoomsSectionProps {
+    showFullDetails?: boolean;
+    filteredRooms?: typeof rooms;
+}
 
 const RoomsSection = ({ showFullDetails = false, filteredRooms }: RoomsSectionProps) => {
     const displayRooms = filteredRooms || rooms;
 
     const handleBookRoom = (roomId: number) => {
         console.log(`Booking room ${roomId}`);
+        // This would open the booking process
     };
 
     return (
@@ -33,7 +38,7 @@ const RoomsSection = ({ showFullDetails = false, filteredRooms }: RoomsSectionPr
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     {displayRooms.map((room, index) => (
-                        <Card key={room.id} className="overflow-hidden hover:shadow-xl transition-all duration-300 border-fauna-200 animate-fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
+                        <Card key={room.id} className="overflow-hidden hover:shadow-xl transition-all duration-300 border-fauna-200 animate-fade-in flex flex-col h-full" style={{ animationDelay: `${index * 0.1}s` }}>
                             <div className="relative">
                                 <img
                                     src={room.image}
@@ -65,10 +70,10 @@ const RoomsSection = ({ showFullDetails = false, filteredRooms }: RoomsSectionPr
                                 </div>
                             </CardHeader>
 
-                            <CardContent>
+                            <CardContent className="flex-1 flex flex-col">
                                 <p className="text-fauna-700 mb-4">{room.description}</p>
 
-                                <div className="space-y-3 mb-6">
+                                <div className="space-y-3 mb-6 flex-1">
                                     <h4 className="font-semibold text-fauna-800">Room Features:</h4>
                                     <div className="grid grid-cols-2 gap-2">
                                         {room.features.map((feature, idx) => (
@@ -80,7 +85,7 @@ const RoomsSection = ({ showFullDetails = false, filteredRooms }: RoomsSectionPr
                                     </div>
                                 </div>
 
-                                <div className="flex justify-between items-center">
+                                <div className="flex justify-between items-center mt-auto">
                                     <div>
                                         <span className="text-2xl font-bold text-fauna-700">${room.price}</span>
                                         <span className="text-fauna-600">/night</span>

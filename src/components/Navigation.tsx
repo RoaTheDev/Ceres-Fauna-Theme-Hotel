@@ -4,9 +4,9 @@ import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Menu, User, LogOut } from 'lucide-react';
-import { useAuth } from '@/hooks/useAuth';
 import LoginDialog from './LoginDialog';
 import { toast } from 'sonner';
+import {useAuth} from "@/hooks/useAuth";
 
 const Navigation = () => {
     const location = useLocation();
