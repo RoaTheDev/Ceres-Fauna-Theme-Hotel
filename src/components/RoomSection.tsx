@@ -7,12 +7,14 @@ import {rooms} from "@/data/rooms.ts";
 
 interface RoomsSectionProps {
     showFullDetails?: boolean;
+    filteredRooms?: typeof rooms;
 }
 
-const RoomsSection = ({ showFullDetails = false }: RoomsSectionProps) => {
+const RoomsSection = ({ showFullDetails = false, filteredRooms }: RoomsSectionProps) => {
+    const displayRooms = filteredRooms || rooms;
+
     const handleBookRoom = (roomId: number) => {
         console.log(`Booking room ${roomId}`);
-        // This would open the booking process
     };
 
     return (
@@ -30,7 +32,7 @@ const RoomsSection = ({ showFullDetails = false }: RoomsSectionProps) => {
                 )}
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    {rooms.map((room, index) => (
+                    {displayRooms.map((room, index) => (
                         <Card key={room.id} className="overflow-hidden hover:shadow-xl transition-all duration-300 border-fauna-200 animate-fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
                             <div className="relative">
                                 <img
