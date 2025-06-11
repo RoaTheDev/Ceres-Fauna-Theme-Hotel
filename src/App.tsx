@@ -9,7 +9,7 @@ import RoomDetailPage from "./pages/RoomDetailPage";
 import AboutPage from "./pages/AboutPage";
 import ContactPage from "./pages/ContactPage";
 import NotFound from "./pages/NotFound";
-
+import AdminPage from "@/pages/AdminPage.tsx";
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -24,6 +24,7 @@ const App = () => (
                         <Route path="/rooms/:id" element={<RoomDetailPage />} />
                         <Route path="/about" element={<AboutPage />} />
                         <Route path="/contact" element={<ContactPage />} />
+                        <Route path="/admin" element={<AdminPage />} />
                         <Route path="*" element={<NotFound />} />
                     </Routes>
                 </BrowserRouter>

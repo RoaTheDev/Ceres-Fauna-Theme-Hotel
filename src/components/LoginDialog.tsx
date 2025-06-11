@@ -1,42 +1,43 @@
-import React, { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { toast } from 'sonner';
+import React, {useState} from 'react';
+import {Dialog, DialogContent, DialogHeader, DialogTitle} from '@/components/ui/dialog';
+import {Button} from '@/components/ui/button';
+import {Input} from '@/components/ui/input';
+import {Label} from '@/components/ui/label';
+import {toast} from 'sonner';
+import {useNavigate} from "react-router-dom";
+import type {UserType} from "@/stores/AuthContext.tsx";
 
 interface LoginDialogProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
-    onLogin: (email: string) => void;
+    onLogin: (user: UserType) => void;
 }
-
-// Dummy user data
 const dummyUsers = [
     { email: 'admin@ceresgarden.com', password: 'admin123', role: 'admin' },
     { email: 'user@example.com', password: 'user123', role: 'user' },
-    { email: 'manager@ceresgarden.com', password: 'manager123', role: 'manager' }
 ];
 
 const LoginDialog = ({ open, onOpenChange, onLogin }: LoginDialogProps) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-
+    const navigate = useNavigate();
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsLoading(true);
 
-        // Simulate API call delay
         setTimeout(() => {
             const user = dummyUsers.find(u => u.email === email && u.password === password);
 
             if (user) {
-                onLogin(user.email);
+                onLogin(user);
                 onOpenChange(false);
                 toast.success(`Welcome back! Logged in as ${user.role}`);
                 setEmail('');
                 setPassword('');
+                if (user.role === 'admin') {
+                    navigate('/admin');
+                }
             } else {
                 toast.error('Invalid email or password');
             }
@@ -84,7 +85,6 @@ const LoginDialog = ({ open, onOpenChange, onLogin }: LoginDialogProps) => {
                         <p className="font-medium mb-1">Demo Accounts:</p>
                         <p>Admin: admin@ceresgarden.com / admin123</p>
                         <p>User: user@example.com / user123</p>
-                        <p>Manager: manager@ceresgarden.com / manager123</p>
                     </div>
 
                     <Button

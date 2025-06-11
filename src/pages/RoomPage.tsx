@@ -1,10 +1,9 @@
 import  { useState, useMemo } from 'react';
 import Navigation from '@/components/Navigation';
-import RoomsSection from '@/components/RoomSection';
+import RoomsSection from '@/components/RoomsSection.tsx';
 import RoomSearchFilter, {type FilterOptions } from '@/components/RoomSearchFilter';
 import DateRangePicker from '@/components/DateRangePicker';
 import { Button } from '@/components/ui/button';
-
 import { Link } from 'react-router-dom';
 import { rooms } from '@/data/rooms';
 

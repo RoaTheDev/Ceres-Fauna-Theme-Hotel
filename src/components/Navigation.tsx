@@ -1,6 +1,5 @@
-
 import  { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import {Link, useLocation, useNavigate} from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Menu, User, LogOut } from 'lucide-react';
@@ -12,11 +11,12 @@ const Navigation = () => {
     const location = useLocation();
     const { user, login, logout, isAuthenticated } = useAuth();
     const [isLoginOpen, setIsLoginOpen] = useState(false);
-
+    const isStaff = user?.role === 'admin'
     const isActive = (path: string) => location.pathname === path;
-
+    const navigate = useNavigate()
     const handleLogout = () => {
         logout();
+        navigate('/')
         toast.success('Logged out successfully');
     };
 
@@ -41,7 +41,7 @@ const Navigation = () => {
 
                         {/* Desktop Navigation */}
                         <div className="hidden md:flex items-center space-x-8">
-                            {navItems.map((item) => (
+                            {!isStaff && navItems.map((item) => (
                                 <Link
                                     key={item.name}
                                     to={item.path}
@@ -62,7 +62,7 @@ const Navigation = () => {
                                 <div className="flex items-center space-x-3">
                                     <div className="flex items-center space-x-2 text-fauna-700">
                                         <User className="h-4 w-4" />
-                                        <span className="text-sm font-medium">{user}</span>
+                                        <span className="text-sm font-medium">{user?.email}</span>
                                     </div>
                                     <Button
                                         variant="outline"
@@ -93,7 +93,7 @@ const Navigation = () => {
                             </SheetTrigger>
                             <SheetContent side="right" className="w-[300px] sm:w-[400px]">
                                 <div className="flex flex-col space-y-6 mt-8">
-                                    {navItems.map((item) => (
+                                    {!isStaff && navItems.map((item) => (
                                         <Link
                                             key={item.name}
                                             to={item.path}
@@ -110,7 +110,7 @@ const Navigation = () => {
                                             <div className="space-y-4">
                                                 <div className="flex items-center space-x-2 text-fauna-700">
                                                     <User className="h-4 w-4" />
-                                                    <span className="text-sm font-medium">{user}</span>
+                                                    <span className="text-sm font-medium">{user?.email}</span>
                                                 </div>
                                                 <Button
                                                     variant="outline"

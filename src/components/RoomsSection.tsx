@@ -19,7 +19,6 @@ const RoomsSection = ({ showFullDetails = false, filteredRooms }: RoomsSectionPr
 
     const handleBookRoom = (roomId: number) => {
         console.log(`Booking room ${roomId}`);
-        // This would open the booking process
     };
 
     return (

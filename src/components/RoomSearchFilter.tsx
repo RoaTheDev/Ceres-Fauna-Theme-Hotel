@@ -1,8 +1,8 @@
-import  { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
-import { Filter, X } from 'lucide-react';
+import {useState} from 'react';
+import {Button} from '@/components/ui/button';
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from '@/components/ui/select';
+import {Badge} from '@/components/ui/badge';
+import {Filter, X} from 'lucide-react';
 
 export interface FilterOptions {
     priceRange: string;
@@ -15,7 +15,7 @@ interface RoomSearchFilterProps {
     onClearFilters: () => void;
 }
 
-const RoomSearchFilter = ({ onFilter, onClearFilters }: RoomSearchFilterProps) => {
+const RoomSearchFilter = ({onFilter, onClearFilters}: RoomSearchFilterProps) => {
     const [filters, setFilters] = useState<FilterOptions>({
         priceRange: '',
         capacity: '',
@@ -23,8 +23,8 @@ const RoomSearchFilter = ({ onFilter, onClearFilters }: RoomSearchFilterProps) =
     });
     const [showFilters, setShowFilters] = useState(false);
 
-    const handleFilterChange = (key: keyof FilterOptions, value: any) => {
-        const newFilters = { ...filters, [key]: value };
+    const handleFilterChange = (key: keyof FilterOptions, value: string | string []) => {
+        const newFilters = {...filters, [key]: value};
         setFilters(newFilters);
         onFilter(newFilters);
     };
@@ -37,7 +37,7 @@ const RoomSearchFilter = ({ onFilter, onClearFilters }: RoomSearchFilterProps) =
     };
 
     const clearAllFilters = () => {
-        setFilters({ priceRange: '', capacity: '', features: [] });
+        setFilters({priceRange: '', capacity: '', features: []});
         onClearFilters();
     };
 
@@ -51,7 +51,7 @@ const RoomSearchFilter = ({ onFilter, onClearFilters }: RoomSearchFilterProps) =
                     onClick={() => setShowFilters(!showFilters)}
                     className="border-fauna-300 text-fauna-700 hover:bg-fauna-50"
                 >
-                    <Filter className="mr-2 h-4 w-4" />
+                    <Filter className="mr-2 h-4 w-4"/>
                     Filters
                 </Button>
                 {(filters.priceRange || filters.capacity || filters.features.length > 0) && (
@@ -60,7 +60,7 @@ const RoomSearchFilter = ({ onFilter, onClearFilters }: RoomSearchFilterProps) =
                         onClick={clearAllFilters}
                         className="text-fauna-600 hover:text-fauna-800"
                     >
-                        <X className="mr-2 h-4 w-4" />
+                        <X className="mr-2 h-4 w-4"/>
                         Clear All
                     </Button>
                 )}
@@ -71,9 +71,10 @@ const RoomSearchFilter = ({ onFilter, onClearFilters }: RoomSearchFilterProps) =
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                         <div>
                             <label className="block text-sm font-medium text-fauna-700 mb-2">Price Range</label>
-                            <Select value={filters.priceRange} onValueChange={(value) => handleFilterChange('priceRange', value)}>
+                            <Select value={filters.priceRange}
+                                    onValueChange={(value) => handleFilterChange('priceRange', value)}>
                                 <SelectTrigger className="border-fauna-200">
-                                    <SelectValue placeholder="Select price range" />
+                                    <SelectValue placeholder="Select price range"/>
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="0-200">$0 - $200</SelectItem>
@@ -86,9 +87,10 @@ const RoomSearchFilter = ({ onFilter, onClearFilters }: RoomSearchFilterProps) =
 
                         <div>
                             <label className="block text-sm font-medium text-fauna-700 mb-2">Capacity</label>
-                            <Select value={filters.capacity} onValueChange={(value) => handleFilterChange('capacity', value)}>
+                            <Select value={filters.capacity}
+                                    onValueChange={(value) => handleFilterChange('capacity', value)}>
                                 <SelectTrigger className="border-fauna-200">
-                                    <SelectValue placeholder="Select capacity" />
+                                    <SelectValue placeholder="Select capacity"/>
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="2">Up to 2 guests</SelectItem>
