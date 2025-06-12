@@ -13,10 +13,9 @@ const HeroSection = () => {
     const [checkIn, setCheckIn] = useState<Date>();
     const [checkOut, setCheckOut] = useState<Date>();
     const [guests, setGuests] = useState('2');
-    const [rooms, setRooms] = useState('1');
 
     const handleBookingSearch = () => {
-        console.log('Searching for rooms...', { checkIn, checkOut, guests, rooms });
+        console.log('Searching for rooms...', { checkIn, checkOut, guests });
         // Backend call
     };
 
@@ -71,7 +70,6 @@ const HeroSection = () => {
                                             mode="single"
                                             selected={checkIn}
                                             onSelect={setCheckIn}
-                                            initialFocus
                                             className="pointer-events-auto"
                                         />
                                     </PopoverContent>
@@ -99,7 +97,6 @@ const HeroSection = () => {
                                             mode="single"
                                             selected={checkOut}
                                             onSelect={setCheckOut}
-                                            initialFocus
                                             className="pointer-events-auto"
                                         />
                                     </PopoverContent>
@@ -123,20 +120,7 @@ const HeroSection = () => {
                                 </Select>
                             </div>
 
-                            {/* Number of Rooms */}
                             <div className="space-y-2">
-                                <Label htmlFor="rooms" className="text-fauna-800 font-medium">Rooms</Label>
-                                <Select value={rooms} onValueChange={setRooms}>
-                                    <SelectTrigger>
-                                        <SelectValue placeholder="Select rooms" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="1">1 Room</SelectItem>
-                                        <SelectItem value="2">2 Rooms</SelectItem>
-                                        <SelectItem value="3">3 Rooms</SelectItem>
-                                        <SelectItem value="4">4+ Rooms</SelectItem>
-                                    </SelectContent>
-                                </Select>
                             </div>
 
                             {/* Search Button */}

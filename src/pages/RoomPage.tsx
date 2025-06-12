@@ -1,14 +1,13 @@
 import  { useState, useMemo } from 'react';
 import Navigation from '@/components/Navigation';
-import RoomsSection from '@/components/RoomsSection.tsx';
-import RoomSearchFilter, {type FilterOptions } from '@/components/RoomSearchFilter';
-import DateRangePicker from '@/components/DateRangePicker';
+import RoomsSection from '@/components/RoomsSection';
+import RoomSearchFilter, { type FilterOptions } from '@/components/RoomSearchFilter';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { rooms } from '@/data/rooms';
 
 const RoomsPage = () => {
-    const [filters, setFilters] = useState<FilterOptions>({
+    const [appliedFilters, setAppliedFilters] = useState<FilterOptions>({
         priceRange: '',
         capacity: '',
         features: []
@@ -16,33 +15,31 @@ const RoomsPage = () => {
 
     const filteredRooms = useMemo(() => {
         return rooms.filter(room => {
+
             let matchesPrice = true;
-            if (filters.priceRange) {
-                const [min, max] = filters.priceRange.split('-').map(p => p.replace('+', '').replace('$', ''));
+            if (appliedFilters.priceRange) {
+                const [min, max] = appliedFilters.priceRange.split('-').map(p => p.replace('+', '').replace('$', ''));
                 const minPrice = parseInt(min);
                 const maxPrice = max ? parseInt(max) : Infinity;
                 matchesPrice = room.price >= minPrice && room.price <= maxPrice;
             }
 
-            const matchesCapacity = !filters.capacity || room.capacity <= parseInt(filters.capacity);
+            const matchesCapacity = !appliedFilters.capacity || room.capacity <= parseInt(appliedFilters.capacity);
 
-            const matchesFeatures = filters.features.length === 0 ||
-                filters.features.every(feature => room.features.includes(feature));
+            const matchesFeatures = appliedFilters.features.length === 0 ||
+                appliedFilters.features.every(feature => room.features.includes(feature));
 
             return matchesPrice && matchesCapacity && matchesFeatures;
         });
-    }, [filters]);
+    }, [appliedFilters]);
 
-    const handleFilter = (newFilters: FilterOptions) => {
-        setFilters(newFilters);
+    const handleSearch = (filters: FilterOptions) => {
+        setAppliedFilters(filters);
+        console.log('Search with filters:', filters);
     };
 
     const handleClearFilters = () => {
-        setFilters({ priceRange: '', capacity: '', features: [] });
-    };
-
-    const handleDateChange = (checkIn: Date | undefined, checkOut: Date | undefined) => {
-        console.log('Date range selected:', { checkIn, checkOut });
+        setAppliedFilters({ priceRange: '', capacity: '', features: [] });
     };
 
     return (
@@ -55,20 +52,14 @@ const RoomsPage = () => {
                     Discover our nature-inspired sanctuaries, each designed to immerse you in tranquility while providing modern comforts and luxurious amenities.
                 </p>
 
-                {/* Date Selection */}
-                <div className="bg-white rounded-lg border border-fauna-200 p-6 mb-8 shadow-sm">
-                    <h2 className="text-xl font-semibold text-fauna-800 mb-4">Select Your Stay</h2>
-                    <DateRangePicker onDateChange={handleDateChange} />
-                </div>
-
                 <RoomSearchFilter
-                    onFilter={handleFilter}
+                    onSearch={handleSearch}
                     onClearFilters={handleClearFilters}
                 />
 
                 {filteredRooms.length === 0 ? (
                     <div className="text-center py-12">
-                        <p className="text-xl text-fauna-600 mb-4">No rooms match your filter criteria</p>
+                        <p className="text-xl text-fauna-600 mb-4">No rooms match your search criteria</p>
                         <Button
                             onClick={handleClearFilters}
                             variant="outline"
